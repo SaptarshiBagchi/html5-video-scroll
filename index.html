@@ -1,88 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="main.css">
-</head>
-<body>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <section class="first">
+      <h2>This is the first content fill</h1>
+      <p>This is the first meaningful content</p>
+    </section>
+    <h1>scroll to play video</h1>
+    <div id="video-container">
+        <h1>scroll to play video</h1>
+        <video id="video" src="https://vjs.zencdn.net/v/oceans.mp4"></video>
+    </div>
     
-    <section class="container">
-        <div class="content">
-            <h1>Scroll to Begin</h1>
-            <p>Start it like this..</p>
-        </div>
-    </section>
-
-    <section class="container">
-        <div class="content">
-            <h1>Step 1</h1>
-            <p>Start it like this..</p>
-        </div>
-    </section>
-
-    <section class="container">
-        <div class="content">
-            <h1>Step 2</h1>
-            <p>Start it like this..</p>
-        </div>
-    </section>
-
-    <section class="container">
-        <div class="content">
-            <h1>Step 3</h1>
-            <p>Start it like this..</p>
-        </div>
-    </section>
-
-    <section class="container">
-        <div class="content">
-            <h1>Step 4</h1>
-            <p>Start it like this..</p>
-        </div>
-    </section>
-
+    <section class="first">
+        <h2>This is the last content fill</h1>
+        <p>This is the first meaningful content</p>
+      </section>
+     
     <div id="set-height"></div>
-
-    <video id="v0" tabindex="0", autobuffer preload>
-        <source type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"' src="fingers.mp4"></source>
-    </video>
-    <script src="sticky.js"></script>
+   
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <script>
+        //when the video is in view make all the things in the page as static
+        var video;
+   
+      function scrollVideo() {
+        
+         // console.log()
+          //
+          
+          //scrollPosition = $(document).scrollTop();
+          scrollPosition =  $(document).scrollTop();
 
-        enterView({
-            selector: 'section',
-            enter: function(el) {
-                el.classList.add('entered');
-            }
-        })
-    
-        var frameNumber = 0, // start video at frame 0
-        // lower numbers = faster playback
-        playbackConst = 1000, 
-        // get page height from video duration
-        setHeight = document.getElementById("set-height"), 
-        // select video element         
-        vid = document.getElementById('v0'); 
-        // var vid = $('#v0')[0]; // jquery option
+        video.currentTime =
+          (scrollPosition / ($(document).height() - $(window).height())) *
+          videoLength;
+      }
 
-    // dynamically set the page height according to video length
-    vid.addEventListener('loadedmetadata', function() {
-    setHeight.style.height = Math.floor(vid.duration) * playbackConst + "px";
-    });
+      document.getElementById('video').addEventListener('ended', function(e){
+        currentScrollPosition = $(window).scrollTop();
+        console.log('the scroll position of the video end'+currentScrollPosition);
+       
+      }, false);
 
+      document.getElementById('video').addEventListener('loadedmetadata', function(e){
+        //this sets the video meta data  
+        video = $("#video").get(0);
+          videoLength = video.duration;
+          console.log("the video length is" + videoLength);
+          var height = document.getElementById('set-height');
+          height.style.height = Math.floor(videoLength) * 1000 + "px";
+      })
 
-    // Use requestAnimationFrame for smooth playback
-    function scrollPlay(){  
-    var frameNumber  = window.pageYOffset/playbackConst;
-    vid.currentTime  = frameNumber;
-    window.requestAnimationFrame(scrollPlay);
-    }
-
-    window.requestAnimationFrame(scrollPlay);
-    
+      $(window).scroll(function (e) {
+          
+         // console.log(`scroll position ${$(window).scrollTop()} `);
+         var scrollPosition = $(window).scrollTop();
+         if(scrollPosition > 809 && scrollPosition <= 44886)
+        {   
+           // $(".first").hide();
+           console.log("Start the video"); 
+           $('#video-container').css({
+               overflow : 'hidden'
+           })
+           scrollVideo();
+         
+         
+        }
+        else{
+           // $(".first").show();
+           
+            console.log('video is not playing');
+            $('.video-container').css({
+               overflow : 'auto'
+           })
+        }
+       
+          
+        // // console.log(e.timeStamp);
+        // // if(e.timeStamp>1500){
+        //     $('#video').css({position : 'fixed'});
+        //     scrollVideo();
+        // }
+          
+        // else{
+        // $('#video').css({position : 'fixed'});
+        // }
+      });
     </script>
-</body>
+  </body>
 </html>

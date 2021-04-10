@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+      }
+      .container {
+        padding: 30%;
+        height: 100vh;
+      }
+      .first {
+        background-color: aqua;
+      }
+
+      .third {
+        background-color: brown;
+      }
+      video {
+        position: fixed;
+        left: 50%;
+        top: 0;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: 100vh;
+        z-index: -100;
+        background-size: cover;
+        transform: translateX(-50%);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="container first">
+      <center>
+        <h1>This is the first content before the video</h1>
+        <p>Keep scrolling</p>
+      </center>
+    </section>
+
+    <section class="container second"></section>
+
+    <section class="container third">
+      <center>
+        <h1>This is the content after the video</h1>
+        <p>Scroll Up to rewind!</p>
+      </center>
+    </section>
+
+    <video id="video" src="https://vjs.zencdn.net/v/oceans.mp4"></video>
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      var first, second, third;
+      $(document).ready(function (e) {
+        first = $(".first").offset().top;
+        second = $(".second").offset().top;
+        third = $(".third").offset().top;
+        console.log("Offset of first :" + first);
+        console.log("Offset of first :" + second);
+        console.log("Offset of first :" + third);
+      });
+
+      //when the video is in view make all the things in the page as static
+      var video;
+
+      function scrollVideo() {
+        // console.log()
+        //
+
+        //scrollPosition = $(document).scrollTop();
+        scrollPosition = $(document).scrollTop();
+
+        video.currentTime =
+          (scrollPosition / ($(document).height() - $(window).height())) *
+          videoLength;
+      }
+
+      document.getElementById("video").addEventListener(
+        "ended",
+        function (e) {
+          currentScrollPosition = $(window).scrollTop();
+          console.log(
+            "the scroll position of the video end" + currentScrollPosition
+          );
+        },
+        false
+      );
+
+      document
+        .getElementById("video")
+        .addEventListener("loadedmetadata", function (e) {
+          //this sets the video meta data
+          video = $("#video").get(0);
+          videoLength = video.duration;
+          console.log("the video length is" + videoLength);
+          // var height = document.getElementsByClassName("second");
+          const height = Math.floor(videoLength) * 500 + "px";
+          $(".second").css({
+            height: height,
+          });
+          first = $(".first").offset().top;
+          second = $(".second").offset().top;
+          third = $(".third").offset().top;
+          console.log("Offset of first :" + first);
+          console.log("Offset of first :" + second);
+          console.log("Offset of first :" + third);
+        });
+
+      $(window).scroll(function (e) {
+        //console.log("the current scroll: " + $(window).scrollTop());
+        let scrollPosition = $(window).scrollTop();
+        if (scrollPosition >= second - 10 || scrollPosition <= second + 10) {
+          console.log("second is in full view");
+          //scrollFix();
+          if (video.duration !== NaN) scrollVideo();
+        }
+
+        if (scrollPosition >= second - 10 || scrollPosition <= second + 10) {
+          console.log("third is in full view");
+          // scrollFix();
+        }
+
+        // else if (scrollPosition == third) console.log("third is in full view");
+        //else console.log("first is in full view");
+      });
+    </script>
+  </body>
+</html>
