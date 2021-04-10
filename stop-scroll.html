@@ -14,7 +14,7 @@
         flex-direction: column;
         justify-content: space-between;
         padding: 5%;
-        height: 100vh;
+        height: 90vh;
       }
       .first {
         background-color: white;
@@ -58,6 +58,9 @@
     </section>
 
     <video id="video" src="https://vjs.zencdn.net/v/oceans.mp4"></video>
+    <!-- <video id="video">
+      <source src="fingers.mp4" />
+    </video> -->
 
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -74,6 +77,7 @@
         console.log("Offset of first :" + first);
         console.log("Offset of first :" + second);
         console.log("Offset of first :" + third);
+        document.getElementById("video").load();
       });
 
       //when the video is in view make all the things in the page as static
@@ -85,10 +89,22 @@
 
         //scrollPosition = $(document).scrollTop();
         scrollPosition = $(document).scrollTop();
-
+        // console.log(
+        //   $(document).scrollTop() +
+        //     " : " +
+        //     $(document).height() +
+        //     " : " +
+        //     $(window).height()
+        // );
         video.currentTime =
           (scrollPosition / ($(document).height() - $(window).height())) *
           videoLength;
+
+        // console.log(
+        //   `Current time : ${video.currentTime} + ${$(document).height()} + ${$(
+        //     window
+        //   ).height()}`
+        // );
       }
 
       document.getElementById("video").addEventListener(
@@ -96,11 +112,17 @@
         function (e) {
           currentScrollPosition = $(window).scrollTop();
           console.log(
-            "the scroll position of the video end" + currentScrollPosition
+            "the scroll position of the video end: " + currentScrollPosition
           );
         },
         false
       );
+
+      document
+        .getElementById("video")
+        .addEventListener("loadeddata", function (e) {
+          console.log("video loaded");
+        });
 
       document
         .getElementById("video")
@@ -110,30 +132,31 @@
           videoLength = video.duration;
           console.log("the video length is" + videoLength);
           // var height = document.getElementsByClassName("second");
-          const height = Math.floor(videoLength) * 500 + "px";
+          const height = Math.floor(videoLength) * 600 + "px";
+          console.log("calculated height : " + height);
           $(".second").css({
-            height: height,
+            height: height
           });
           first = $(".first").offset().top;
           second = $(".second").offset().top;
           third = $(".third").offset().top;
           console.log("Offset of first :" + first);
-          console.log("Offset of first :" + second);
-          console.log("Offset of first :" + third);
+          console.log("Offset of second :" + second);
+          console.log("Offset of third :" + third);
         });
 
       $(window).scroll(function (e) {
         //console.log("the current scroll: " + $(window).scrollTop());
-        let scrollPosition = $(window).scrollTop();
-        if (scrollPosition >= second - 10 || scrollPosition <= second + 10) {
-          console.log("second is in full view");
-          //scrollFix();
-          if (video.duration !== NaN) scrollVideo();
-        }
+        if (video != undefined) {
+          let scrollPosition = $(window).scrollTop();
+          if (scrollPosition >= second - 5 || scrollPosition <= second + 5) {
+            //scrollFix();
+            if (video.duration !== NaN) scrollVideo();
+          }
 
-        if (scrollPosition >= second - 10 || scrollPosition <= second + 10) {
-          console.log("third is in full view");
-          // scrollFix();
+          if (scrollPosition >= third - 10 || scrollPosition <= third + 5) {
+            // scrollFix();
+          }
         }
 
         // else if (scrollPosition == third) console.log("third is in full view");
