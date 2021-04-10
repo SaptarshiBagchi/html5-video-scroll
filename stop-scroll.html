@@ -10,15 +10,25 @@
         margin: 0;
       }
       .container {
-        padding: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 5%;
         height: 100vh;
       }
       .first {
-        background-color: aqua;
+        background-color: white;
       }
 
+      h1 {
+        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+        font-size: 3em;
+      }
+      p {
+        font-size: 1.5em;
+      }
       .third {
-        background-color: brown;
+        background-color: white;
       }
       video {
         position: fixed;
@@ -36,19 +46,15 @@
   </head>
   <body>
     <section class="container first">
-      <center>
-        <h1>This is the first content before the video</h1>
-        <p>Keep scrolling</p>
-      </center>
+      <h1>This is the first content before the video</h1>
+      <p>Keep scrolling</p>
     </section>
 
     <section class="container second"></section>
 
     <section class="container third">
-      <center>
-        <h1>This is the content after the video</h1>
-        <p>Scroll Up to rewind!</p>
-      </center>
+      <h1>This is the content after the video</h1>
+      <p>Scroll Up to rewind!</p>
     </section>
 
     <video id="video" src="https://vjs.zencdn.net/v/oceans.mp4"></video>
