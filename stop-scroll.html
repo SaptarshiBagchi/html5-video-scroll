@@ -56,6 +56,7 @@
       <h1>This is the content after the video</h1>
       <p>Scroll Up to rewind!</p>
     </section>
+    <div>This does nothing</div>
 
     <video id="video" src="https://vjs.zencdn.net/v/oceans.mp4"></video>
     <!-- <video id="video">
@@ -135,7 +136,7 @@
           const height = Math.floor(videoLength) * 600 + "px";
           console.log("calculated height : " + height);
           $(".second").css({
-            height: height
+            height: height,
           });
           first = $(".first").offset().top;
           second = $(".second").offset().top;
